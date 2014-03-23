@@ -1,0 +1,42 @@
+#random Cube generator.py
+
+
+import maya.cmds as cmds
+import random
+
+random.seed (1234)
+'''
+cubeList = cmds.ls('mycube*')
+if len(cubeList) < 0:
+    cmds.delete (cubeList)
+'''
+     
+result = cmds.polyCube (ch=True, o=True, w= 2, h= 2, d= 2, cuv = 4, name= "myCube#")
+instanceGroupName = cmds.group( empty= True, name=transformName + '_instance_grp#')
+
+#print 'Result: ' + str( result )
+
+transformName = result [0] 
+for i in range (0, 50):
+    instanceResult = cmds.instance(transformName, name= transformName + "_instance#")
+    
+    cmds.parent(instanceResult, instanceGroupName)
+    x = random.uniform (-10,10)
+    y = random.uniform (0, 20)
+    z = random.uniform (-10,10)
+    cmds.move( x, y, z, instanceResult )
+    
+    xrot = random.uniform(0, 360)
+    yrot = random.uniform(0, 360)
+    zrot = random.uniform(0, 360)
+    cmds.rotate( xrot, yrot, zrot, instanceResult)
+    
+    scalingFacter = random.uniform( 0.3, 1.5) 
+    
+    cmds.scale(scalingFacter, scalingFacter, scalingFacter, instanceResult)
+
+cmds.hide(transformName)
+cmds.xform(instanceGroupName, centerPivots= True) 
+    
+   
+    #print 'instance Result: ' + str( instanceResult )
